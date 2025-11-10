@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simple Ajax Demo</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+body {font-family: Arial; background: #f4f4f4; padding: 20px;}
+.container {max-width: 700px; margin: auto; background: #fff; padding: 20px; border-radius: 8px;}
+button {background: #4CAF50; color: #fff; border: none; padding: 10px; margin: 5px; border-radius: 4px; cursor: pointer;}
+pre {background: #f8f8f8; padding: 10px; border-radius: 5px; white-space: pre-wrap;}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Ajax Demo</h1>
+
+<h3>a. Without jQuery</h3>
+<button onclick="ajaxNoJquery()">Run</button>
+<pre id="a"></pre>
+
+<h3>b. With jQuery</h3>
+<button onclick="ajaxJquery()">Run</button>
+<pre id="b"></pre>
+
+<h3>c. getJSON()</h3>
+<button onclick="getJSONDemo()">Run</button>
+<pre id="c"></pre>
+
+<h3>d. parseJSON()</h3>
+<button onclick="parseJSONDemo()">Run</button>
+<pre id="d"></pre>
+</div>
+
+<script>
+// --- Simulated Data (no external files needed) ---
+const sampleText = "Hello! This text is loaded using Ajax simulation.";
+const sampleJSON = { name: "Alice", age: 22, city: "London" };
+
+// a. Ajax without jQuery (using XMLHttpRequest)
+function ajaxNoJquery() {
+  const xhr = new XMLHttpRequest();
+  xhr.onload = () => document.getElementById("a").textContent = sampleText;
+  setTimeout(() => xhr.onload(), 300); // simulate delay
+}
+
+// b. Ajax with jQuery
+function ajaxJquery() {
+  $.Deferred(d => setTimeout(() => d.resolve(sampleText), 300))
+   .done(t => $("#b").text(t));
+}
+
+// c. getJSON()
+function getJSONDemo() {
+  $.Deferred(d => setTimeout(() => d.resolve(sampleJSON), 300))
+   .done(j => $("#c").text(JSON.stringify(j, null, 2)));
+}
+ 
+// d. parseJSON()
+function parseJSONDemo() {
+  const jsonStr = JSON.stringify(sampleJSON);
+  const obj = $.parseJSON(jsonStr);
+  $("#d").text(JSON.stringify(obj, null, 2));
+}
+</script>
+</body>
+</html>
